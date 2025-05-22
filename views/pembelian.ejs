@@ -1,0 +1,31 @@
+<h2>Daftar Pembelian</h2>
+
+<table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Produk</th>
+      <th>Jumlah</th>
+      <th>Total</th>
+      <th>Status</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% pembelian.forEach(p => { %>
+      <tr>
+        <td><%= p.nama %></td>
+        <td><%= p.jumlah %></td>
+        <td><%= p.total %></td>
+        <td><%= p.status %></td>
+        <td>
+          <% if (p.status !== 'dibatalkan') { %>
+            <form action="/cancel/<%= p.id %>" method="POST" onsubmit="return confirm('Yakin batalkan?')">
+              <button type="submit">Batalkan</button>
+            </form>
+          <% } else { %> -
+          <% } %>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
