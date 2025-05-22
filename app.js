@@ -4,14 +4,13 @@ const expressLayouts = require('express-ejs-layouts');
 const db = require('./db');
 const bodyParser = require('body-parser');
 
-// Middleware dan View Engine
 app.use(expressLayouts);
-app.set('layout', 'layout'); // File layout.ejs di folder "views"
+app.set('layout', 'layout'); 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Halaman Utama
+
 app.get('/', (req, res) => {
     db.query(
         'SELECT produk.id, produk.nama, produk.harga, stok.jumlah AS stok FROM produk JOIN stok ON produk.id = stok.produk_id',
@@ -22,7 +21,7 @@ app.get('/', (req, res) => {
     );
 });
 
-// Halaman Pembelian
+
 app.get('/pembelian', (req, res) => {
     db.query(
         'SELECT pembelian.*, produk.nama FROM pembelian JOIN produk ON pembelian.produk_id = produk.id',
@@ -33,7 +32,7 @@ app.get('/pembelian', (req, res) => {
     );
 });
 
-// Input Pembelian
+
 app.post('/beli', (req, res) => {
     const { produk_id, jumlah } = req.body;
     db.query('SELECT harga FROM produk WHERE id = ?', [produk_id], (err, results) => {
@@ -51,7 +50,7 @@ app.post('/beli', (req, res) => {
     });
 });
 
-// Cancel Pembelian
+
 app.post('/cancel/:id', (req, res) => {
     const id = req.params.id;
     db.query('SELECT * FROM pembelian WHERE id = ?', [id], (err, results) => {
@@ -67,5 +66,4 @@ app.post('/cancel/:id', (req, res) => {
     });
 });
 
-// Jalankan server
 app.listen(3000, () => console.log('Server running on http://localhost:3000'));
